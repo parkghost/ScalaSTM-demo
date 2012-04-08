@@ -4,8 +4,8 @@ import java.util.concurrent.TimeUnit
 
 import scala.concurrent.forkjoin.ThreadLocalRandom
 
+import me.brandonc.banking.DeadLockDetectWorker
 import me.brandonc.banking.Simulator
-import me.brandonc.banking.ThreadUtil
 import me.brandonc.banking.Worker
 
 object FundTransferSimulationWithLocking extends App {
@@ -28,12 +28,12 @@ object FundTransferSimulationWithLocking extends App {
   // 監控各 account 存款與交易次數(每秒)
   simulator.addWorker(new SnapshotWorker(1000, accounts))
 
+  // 偵測 deadlock (每秒)
+  simulator.addWorker(new DeadLockDetectWorker(1000, true))
+
   simulator.start()
   TimeUnit.MINUTES.sleep(duration)
   simulator.stop()
-
-  // 偵測 deadlock 
-  ThreadUtil.detectDeadlock()
 
 }
 
