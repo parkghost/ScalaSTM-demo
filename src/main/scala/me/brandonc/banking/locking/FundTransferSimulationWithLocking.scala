@@ -40,7 +40,7 @@ object FundTransferSimulationWithLocking extends App {
 class TransferWorker(from: Account, to: Account, maxValue: Int) extends Worker {
 
   def doTask = {
-    GlobalLock.synchronized {
+    Lock.synchronized {
       val amount = ThreadLocalRandom.current().nextInt(maxValue)
       if (from.getBalance >= amount) {
         from.transferTo(to, amount)
@@ -58,7 +58,7 @@ class SnapshotWorker(intervalMilli: Int, accounts: List[Account]) extends Worker
     TimeUnit.MILLISECONDS.sleep(intervalMilli)
   }
 
-  def snapshot = GlobalLock.synchronized {
+  def snapshot = Lock.synchronized {
     val buf = new StringBuilder
     for (acount <- accounts) {
       buf ++= "Account:%s balance:%3d transactions:%d\n".format(acount.name, acount.getBalance, acount.getTransactions)
