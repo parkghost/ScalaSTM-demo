@@ -1,8 +1,9 @@
 package me.brandonc.banking
-import java.util.concurrent.Executors
-import scala.collection.mutable.ListBuffer
-import java.util.concurrent.TimeUnit
 import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
+
+import scala.collection.mutable.ListBuffer
 
 class Simulator {
 

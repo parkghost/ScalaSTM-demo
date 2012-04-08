@@ -3,7 +3,7 @@ package me.brandonc.banking.stm
 import java.util.concurrent.TimeUnit
 
 import scala.concurrent.forkjoin.ThreadLocalRandom
-import scala.concurrent.stm._
+import scala.concurrent.stm.atomic
 
 import me.brandonc.banking.Simulator
 import me.brandonc.banking.ThreadUtil
