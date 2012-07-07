@@ -12,7 +12,7 @@ object FundTransferSimulationWithComplexLocking extends App {
 
   val parameters = if (args.length == 4) args else "5 100 100 1".split("\\s")
 
-  val (numberOfAccounts, initialBalance, rangeOftransferValue, duration) = (parameters(0).toInt, parameters(1).toInt, parameters(2).toInt, parameters(3).toInt)
+  val (numberOfAccounts, initialBalance, rangeOfTransferValue, duration) = (parameters(0).toInt, parameters(1).toInt, parameters(2).toInt, parameters(3).toInt)
 
   val accounts = Range(1, numberOfAccounts + 1).map(x => Account(x.toString(), initialBalance)).toList
 
@@ -21,7 +21,7 @@ object FundTransferSimulationWithComplexLocking extends App {
   // 加入轉帳組合
   for (left <- accounts; right <- accounts) {
     if (left != right) {
-      simulator.addWorker(new TransferWorker(left, right, rangeOftransferValue))
+      simulator.addWorker(new TransferWorker(left, right, rangeOfTransferValue))
     }
   }
 
@@ -71,7 +71,6 @@ class TransferWorker(from: Account, to: Account, maxValue: Int) extends Worker {
       }
     }
 
-    Thread.`yield`
   }
 
 }

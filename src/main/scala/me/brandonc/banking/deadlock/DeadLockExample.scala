@@ -8,6 +8,7 @@ import me.brandonc.banking.DeadLockDetectWorker
 import me.brandonc.banking.Simulator
 import me.brandonc.banking.Worker
 
+
 object DeadLockExample extends App {
 
   val parameters = if (args.length == 4) args else "5 100 100 1".split("\\s")
@@ -39,6 +40,8 @@ class TransferWorker(from: Account, to: Account, maxValue: Int) extends Worker {
   def doTask = {
 
     val amount = ThreadLocalRandom.current().nextInt(maxValue)
+
+    // deadlock prone: caused by lock ordering
     from.synchronized {
       to.synchronized {
         if (from.getBalance >= amount) {
@@ -46,8 +49,6 @@ class TransferWorker(from: Account, to: Account, maxValue: Int) extends Worker {
         }
       }
     }
-
-    Thread.`yield`
   }
 
 }

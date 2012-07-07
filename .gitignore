@@ -4,3 +4,4 @@ project/project
 .cache
 .classpath
 .project
+.settings

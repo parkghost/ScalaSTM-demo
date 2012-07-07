@@ -7,6 +7,9 @@ import scala.concurrent.forkjoin.ThreadLocalRandom
 import me.brandonc.banking.DeadLockDetectWorker
 import me.brandonc.banking.Simulator
 import me.brandonc.banking.Worker
+import net.jcip.annotations.GuardedBy
+import net.jcip.annotations.ThreadSafe
+
 
 object FundTransferSimulationWithLocking extends App {
 
@@ -46,12 +49,12 @@ class TransferWorker(from: Account, to: Account, maxValue: Int) extends Worker {
         from.transferTo(to, amount)
       }
     }
-    Thread.`yield`
   }
 
 }
 
-class SnapshotWorker(intervalMilli: Int, accounts: List[Account]) extends Worker {
+@ThreadSafe
+class SnapshotWorker(intervalMilli: Int, @GuardedBy("me.brandonc.banking.locking.Lock") accounts: List[Account]) extends Worker {
 
   def doTask = {
     println(snapshot)

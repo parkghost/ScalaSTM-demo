@@ -1,15 +1,20 @@
 package me.brandonc.banking.complexlocking
+import net.jcip.annotations.GuardedBy
+import net.jcip.annotations.ThreadSafe
 
+@ThreadSafe
 case class Account(val name: String, init: Int) {
 
   /**
    * 存款金額
    */
+  @GuardedBy("this")
   private var balance = init
 
   /**
    * 交易次數
    */
+  @GuardedBy("this")
   private var transactions = 0;
 
   def withdraw(amount: Int) = synchronized {

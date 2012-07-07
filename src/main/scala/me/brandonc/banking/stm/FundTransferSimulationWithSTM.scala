@@ -45,9 +45,7 @@ class TransferWorker(from: Account, to: Account, maxValue: Int) extends Worker {
       val amount = ThreadLocalRandom.current().nextInt(maxValue)
       if (from.getBalance >= amount) {
         from.transferTo(to, amount)
-      } else {
-        Thread.`yield`
-      }
+      } 
     }
 }
 
